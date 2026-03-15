@@ -1,0 +1,61 @@
+<section class="chart-section">
+  <div class="dashboard-container">
+    <h2>Expense Dashboard</h2>
+    
+    <div class="chart-wrapper">
+      <div class="card revenue-card">
+        <div class="card-header">
+          <h3>Revenue Management</h3>
+        </div>
+        <div class="card-content">
+          <div class="canvas-container">
+            <canvas #barChart id="revenueChart" width="400" height="400"></canvas>
+          </div>
+        </div>
+      </div>
+
+      <div class="card chart-card">
+        <div class="card-header">
+          <h3>Expenses Chart</h3>
+        </div>
+        <div class="card-content">
+          <div class="canvas-container">
+            <canvas #pieChart id="expenseChart" width="400" height="400"></canvas>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="summary-wrapper">
+      <div class="revenue-summary">
+        <h3>Revenue Summary</h3>
+        <div class="summary-list">
+          <div *ngFor="let revenue of revenueData; let i = index" class="summary-item">
+            <span class="summary-color" [style.backgroundColor]="revenue.color"></span>
+            <span class="summary-label">{{ revenue.label }}</span>
+            <span class="summary-value">${{ revenue.value }}</span>
+          </div>
+        </div>
+        <div class="summary-total">
+          <strong>Total Revenue:</strong>
+          <strong>${{ totalRevenue }}</strong>
+        </div>
+      </div>
+
+      <div class="expense-summary">
+        <h3>Expense Summary</h3>
+        <div class="summary-list">
+          <div *ngFor="let expense of pieData; let i = index" class="summary-item">
+            <span class="summary-color" [style.backgroundColor]="expense.color"></span>
+            <span class="summary-label">{{ expense.label }}</span>
+            <span class="summary-value">${{ expense.value }}</span>
+          </div>
+        </div>
+        <div class="summary-total">
+          <strong>Total Expenses:</strong>
+          <strong>${{ totalExpenses }}</strong>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
