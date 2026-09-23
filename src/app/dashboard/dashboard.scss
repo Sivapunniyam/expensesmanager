@@ -16,7 +16,7 @@
 
   .chart-wrapper {
     display: flex;
-    gap: 2rem;
+    gap: 11rem;
     margin-bottom: 2rem;
     flex-wrap: wrap;
 
@@ -29,6 +29,7 @@
       overflow: hidden;
       display: flex;
       flex-direction: column;
+      max-width: 34rem;
 
       .card-header {
         background-color: #2c3e50;

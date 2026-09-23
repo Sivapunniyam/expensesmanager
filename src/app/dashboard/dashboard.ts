@@ -17,6 +17,14 @@ interface RevenueData {
   color: string;
 }
 
+interface IncomeEntry {
+  source: string;
+  category: string;
+  amount: number;
+  date: string;
+  description: string;
+}
+
 @Component({
   standalone: true,
   selector: 'app-dashboard',
@@ -48,6 +56,10 @@ export class Dashboard implements AfterViewInit {
     { label: 'Bonus', value: 2000, color: '#9b59b6' },
     { label: 'Others', value: 500, color: '#95a5a6' }
   ];
+
+  constructor() {
+    this.loadIncomeEntries();
+  }
 
   ngAfterViewInit(): void {
     setTimeout(() => {
@@ -105,7 +117,7 @@ export class Dashboard implements AfterViewInit {
                 const value = context.parsed || 0;
                 const total = this.totalExpenses;
                 const percentage = ((value / total) * 100).toFixed(2);
-                return `${label}: $${value} (${percentage}%)`;
+                return `${label}: ₹${value} (${percentage}%)`;
               }
             }
           }
@@ -166,7 +178,7 @@ export class Dashboard implements AfterViewInit {
                 const value = context.parsed.x || 0;
                 const total = this.totalRevenue;
                 const percentage = ((value / total) * 100).toFixed(2);
-                return `$${value} (${percentage}%)`;
+                return `₹${value} (${percentage}%)`;
               }
             }
           }
@@ -176,7 +188,7 @@ export class Dashboard implements AfterViewInit {
             beginAtZero: true,
             ticks: {
               callback: function(value: any) {
-                return '$' + value;
+                return '₹' + value;
               }
             }
           }
@@ -258,6 +270,40 @@ export class Dashboard implements AfterViewInit {
     this.revenueChart.data.datasets[0].data = this.revenueData.map(d => d.value);
     (this.revenueChart.data.datasets[0] as any).backgroundColor = this.revenueData.map(d => d.color);
     this.revenueChart.update();
+  }
+
+  private loadIncomeEntries(): void {
+    if (typeof window === 'undefined' || !window.localStorage) {
+      return;
+    }
+
+    try {
+      const saved = window.localStorage.getItem('expense-manager-income-entries');
+      if (!saved) {
+        return;
+      }
+
+      const parsed = JSON.parse(saved) as IncomeEntry[];
+      if (!Array.isArray(parsed) || parsed.length === 0) {
+        return;
+      }
+
+      const latestByCategory = new Map<string, number>();
+      parsed.forEach((entry) => {
+        const current = latestByCategory.get(entry.category) ?? 0;
+        latestByCategory.set(entry.category, current + Number(entry.amount || 0));
+      });
+
+      const incomeGroups = Array.from(latestByCategory.entries()).map(([label, value], index) => ({
+        label,
+        value,
+        color: ['#27ae60', '#3498db', '#f39c12', '#e74c3c', '#9b59b6', '#95a5a6'][index % 6],
+      }));
+
+      this.revenueData = incomeGroups.length > 0 ? incomeGroups : this.revenueData;
+    } catch {
+      this.revenueData = this.revenueData;
+    }
   }
 
   onDashboardClick(): void {
