@@ -33,12 +33,12 @@
           <div *ngFor="let revenue of revenueData; let i = index" class="summary-item">
             <span class="summary-color" [style.backgroundColor]="revenue.color"></span>
             <span class="summary-label">{{ revenue.label }}</span>
-            <span class="summary-value">${{ revenue.value }}</span>
+            <span class="summary-value">₹{{ revenue.value }}</span>
           </div>
         </div>
         <div class="summary-total">
           <strong>Total Revenue:</strong>
-          <strong>${{ totalRevenue }}</strong>
+          <strong>₹{{ totalRevenue }}</strong>
         </div>
       </div>
 
@@ -48,12 +48,12 @@
           <div *ngFor="let expense of pieData; let i = index" class="summary-item">
             <span class="summary-color" [style.backgroundColor]="expense.color"></span>
             <span class="summary-label">{{ expense.label }}</span>
-            <span class="summary-value">${{ expense.value }}</span>
+            <span class="summary-value">₹{{ expense.value }}</span>
           </div>
         </div>
         <div class="summary-total">
           <strong>Total Expenses:</strong>
-          <strong>${{ totalExpenses }}</strong>
+          <strong>₹{{ totalExpenses }}</strong>
         </div>
       </div>
     </div>

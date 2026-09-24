@@ -1,0 +1,114 @@
+<div class="signup-container">
+  <div class="signup-box">
+    <h1>Create Account</h1>
+    <p class="form-subtitle">Join us and manage your finances effortlessly</p>
+    <form [formGroup]="signupForm" (ngSubmit)="onSubmit()">
+      <div class="form-group">
+        <label for="username">Username</label>
+        <input
+          id="username"
+          type="text"
+          class="form-control"
+          formControlName="username"
+          placeholder="Choose a username"
+          required
+        />
+        @if (signupForm.get('username')?.invalid && signupForm.get('username')?.touched) {
+          <div class="error-message">
+            @if (signupForm.get('username')?.errors?.['required']) {
+              Username is required
+            }
+            @if (signupForm.get('username')?.errors?.['minlength']) {
+              Username must be at least 3 characters
+            }
+          </div>
+        }
+      </div>
+
+      <div class="form-group">
+        <label for="email">Email</label>
+        <input
+          id="email"
+          type="email"
+          class="form-control"
+          formControlName="email"
+          placeholder="Enter your email"
+          required
+        />
+        @if (signupForm.get('email')?.invalid && signupForm.get('email')?.touched) {
+          <div class="error-message">
+            @if (signupForm.get('email')?.errors?.['required']) {
+              Email is required
+            }
+            @if (signupForm.get('email')?.errors?.['email']) {
+              Please enter a valid email
+            }
+          </div>
+        }
+      </div>
+
+      <div class="form-group">
+        <label for="password">Password</label>
+        <input
+          id="password"
+          type="password"
+          class="form-control"
+          formControlName="password"
+          placeholder="Create a password"
+          required
+        />
+        @if (signupForm.get('password')?.invalid && signupForm.get('password')?.touched) {
+          <div class="error-message">
+            @if (signupForm.get('password')?.errors?.['required']) {
+              Password is required
+            }
+            @if (signupForm.get('password')?.errors?.['minlength']) {
+              Password must be at least 6 characters
+            }
+          </div>
+        }
+      </div>
+
+      <div class="form-group">
+        <label for="confirmPassword">Confirm Password</label>
+        <input
+          id="confirmPassword"
+          type="password"
+          class="form-control"
+          formControlName="confirmPassword"
+          placeholder="Confirm your password"
+          required
+        />
+        @if (
+          signupForm.get('confirmPassword')?.invalid && signupForm.get('confirmPassword')?.touched
+        ) {
+          <div class="error-message">
+            @if (signupForm.get('confirmPassword')?.errors?.['required']) {
+              Please confirm your password
+            }
+          </div>
+        }
+      </div>
+
+      @if (signupForm.errors?.['passwordMismatch'] && signupForm.touched) {
+        <div class="error-message form-error">Passwords do not match</div>
+      }
+
+      @if (errorMessage) {
+        <div class="alert alert-danger">{{ errorMessage }}</div>
+      }
+
+      @if (successMessage) {
+        <div class="alert alert-success">{{ successMessage }}</div>
+      }
+
+      <button type="submit" class="btn btn-primary" [disabled]="signupForm.invalid">
+        Get Started
+      </button>
+    </form>
+
+    <div class="login-link">
+      <p>Already have an account? <a (click)="navigateToLogin()">Login here</a></p>
+    </div>
+  </div>
+</div>
